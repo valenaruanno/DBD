@@ -1,0 +1,58 @@
+1. Listar nombre, fecha de nacimiento y dirección de entrenadores que hayan entrenado en la canchas
+denominadas “Cancha 1” y “Cancha 2” del complejo con nombre “Norte” del club “Deportivo La Plata”.
+
+clubD <- π idClub (σ nombre = "Deportivo La Plata" (Club))
+complejoN <- π idComplejo (σ nombre = "Norte" (Complejo ⋈ clubD))
+EntrenadoresCancha1 <-  π nombreEntrenador, fechaNacimiento, direccion (σ nombre = "Cancha 1" (Entrenador ⋈ Entrenamiento ⋈ Cancha ⋈ complejoN))
+EntrenadoresCancha2 <-  π nombreEntrenador, fechaNacimiento, direccion (σ nombre = "Cancha 2" (Entrenador ⋈ Entrenamiento ⋈ Cancha ⋈ complejoN))
+                    π EntrenadoresCancha1 ∩ EntrenadoresCancha2 
+
+2. Listar nombre y ciudad de todos los clubes en los que entrena el entrenador “Marcos Perez”.
+               
+                    π Club.nombre, ciudad (σ nombreEntrenador = "Marcos Perez" (Entrenador ⋈ Entrenamiento ⋈ Cancha ⋈ Complejo ⋈ Club))
+
+3. Eliminar los entrenamientos del entrenador ‘Juan Perez’.
+
+                    Entrenamiento <- Entrenamiento - (π IdEntrenamiento, fecha, IdEntrenador, IdCancha (σ nombreEntrenador = "Juan Perez" 
+                            (Entrenamiento ⋈ Entrenador)))
+
+4. Listar los nombres de los clubes que se ubican en la misma ciudad que el club con nombre “Crucero del Sur”.
+
+        ciudadCruceroDelSur <- π ciudad (σ nombre = "Crucero del Sur" (Club))
+                        π nombre (σ ciudad = ciudadCruceroDelSur (Club))
+
+5. Listar nombre y fecha de nacimiento de los entrenadores que hayan realizado en una misma fecha entrenamientos en todas las canchas del complejo con 
+nombre “Centro” del club “Centro Fomento LH’.
+
+                                                    //Realizar
+
+6. Listar nombre, fecha de nacimiento y dirección de aquellos entrenadores que entrenan clubes de la ciudad “La Plata” pero que no entrenan clubes de 
+la ciudad “Berisso”
+
+        entrenadoresCiudadLaPlata <- nombreEntrenador, fechaNacimiento, direccion (σ ciudad = "La Plata" (Entrenador ⋈ Entrenamiento ⋈ Cancha ⋈ Complejo ⋈ Club))
+        entrenadoresCiudadBerisso <- nombreEntrenador, fechaNacimiento, direccion (σ ciudad = "Berisso" (Entrenador ⋈ Entrenamiento ⋈ Cancha ⋈ Complejo ⋈ Club))
+                    π nombreEntrenador, fechaNacimiento, direccion (entrenadoresCiudadLaPlata - entrenadoresCiudadBerisso)
+
+7. Listar la información de las canchas que disponen los clubes de la ciudad “La Plata”. Por cada resultado, se debe informar el nombre del club, 
+el nombre del complejo y el nombre de la cancha.
+            clubesLP <- π IdClub (σ ciudad = "La Plata" (Club))
+            π Club.nombre, Complejo.nombre, Cancha.nombre (clubesLP ⋈ Complejo ⋈ Cancha)
+
+Club = (IdClub, nombre, ciudad)
+Complejo = (IdComplejo, nombre, IdClub(fk))
+Cancha = (IdCancha, nombre, IdComplejo(fk))
+Entrenador = (IdEntrenador, nombreEntrenador, fechaNacimiento, direccion)
+Entrenamiento = (IdEntrenamiento, fecha, IdEntrenador(fk), IdCancha(fk))
+
+Selección (σ):
+Proyección (π):
+Renombrar (ρ):
+Unión (∪):
+Intersección (∩):
+Diferencia (−):
+Producto cartesiano (×):
+Unión natural (⋈):
+División (÷):
+Asignación (←)
+
+
