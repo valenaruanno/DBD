@@ -1,0 +1,73 @@
+1. Listar DNI, nombre completo, dirección, teléfono de contacto y email de barberos que tengan
+atenciones con valor superior a 5000.
+
+    π DNIB, nombreApellidoB, direccionB, telefonoContacto, mail 
+        (σ valor > 5000 (Barbero ⋈ Atencion))
+
+
+2. Listar DNI, nombre y apellido, dirección, fecha de nacimiento y celular de clientes que tengan
+atenciones en la barbería con razón social ‘Corta barba’ y que también se hayan atendido en la
+barbería con razón social ‘Barberia Barbara’
+
+    clientesCortaBarba <= π DNI, nombreApellidoC, direccionC, fechaNaciomiento, celular 
+                (σ razon_social = "Corta barba" (Cliente ⋈ Atencion ⋈ Barberia))
+    clientesBarberiaBarbara <= π DNI, nombreApellidoC, direccionC, fechaNacimiento, celular 
+                (σ razon_social = "Barberia Barbara" (Cliente ⋈ Atencion ⋈ Barberia))
+    π DNI, nombreApellidoC, direccionC, fechaNacimiento, celular (clientesCortaBarba ∩ clientesBarberiaBarbara)
+
+
+3. Eliminar el cliente con DNI 22222222.
+
+    cliEliminar <= π nroCliente (σ DNI = 22222222 (Cliente))
+    Atencion <= Atencion - (σ nroCliente = cliEliminar (Atencion))
+    Cliente <= Cliente - (σ nroCliente = cliEliminar (Cliente))
+
+
+4. Listar los clientes más jóvenes que el cliente con nombre y apellido ‘Juan Perez’.
+
+    nacimientoJP <= π fechaNacimiento (σ nombreApelidoC = "Juan Perez" (Cliente))
+    π DNI, nombreApellidoC, direccionC, fechaNacimiento, celular (σ fechaNacimiento > nacimientoJP (Cliente))
+
+
+5. Listar los clientes que han tenido atenciones con todos los barberos que han trabajado en la barbería
+con razón social ‘Corta Barba’
+
+    barberosCortaBarba <= π codEmpleado (σ razon_social = "Corta Barba"(Atencion |x| Barberia))
+    π DNI, nombreApellidoC, direccionC, fechaNacimiento, celular ((π nroCliente, codEmpleado(Cliente |x| Atencion) % barberosCortaBarba) |x| Cliente)
+
+
+6. Listar DNI y nombre completo de los barberos que solamente tengan atenciones a partir de 2024.
+
+    barberos2024 <= π DNIB, nombreApellidoB (σ fecha >= "01-01-2024" (Barbero |x| Atencion))
+    barberosNo2024 <= π DNIB, nombreApellidoB (σ fecha < "01-01-2024" (Barbero |x| Atencion))
+    π DNIB, nombreApellidoB (barberos2024 - barberosNo2024)
+
+
+7. Modificar la dirección de la barbería con razón social ‘Pelo & Barba’ con su nueva dirección: ‘13
+n°1234 La Plata’.
+
+    barberiaP&B <= σ razon_social = "Pelo & Barba" (Barberia)
+    δ direccion <= "13 n°1234 La Plata" (barberiaP&B)
+
+8. Listar los datos de las atenciones realizadas por las barberías durante el mes de Septiembre de 2024,
+indicando por cada atención la razón social de la barbería, el nombre completo del empleado que
+realizó la atención, el nombre completo del cliente que recibió la atención, la fecha y hora, la
+descripción de los tratamientos aplicados y el valor de la atención.
+
+    π razon_social, nombreApellidoB, nombreApellidoC, fecha, hora, descTratamientos, valor (σ fecha >= "01-09-2024" ^ fecha <= "31-09-2024"(Baberia |x| Atencion |x| Cliente |x| Barbero))
+Barberia = (codBarberia, razon_social, direccion, telefono)
+Cliente = (nroCliente, DNI, nombreApellidoC, direccionC, fechaNacimiento, celular)
+Barbero = (codEmpleado, DNIB, nombreApellidoB, direccionB, telefonoContacto, mail)
+Atencion = (codEmpleado(fk), fecha, hora, codBarberia(fk), nroCliente(fk), descTratamiento, valor)
+
+Selección (σ):
+Proyección (π):
+Renombrar (ρ):
+Unión (∪):
+Intersección (∩):
+Diferencia (−):
+Producto cartesiano (×):
+Unión natural (⋈):
+División (÷):
+Asignación (←)
+Modificacion (δ)
